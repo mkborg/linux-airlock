@@ -34,6 +34,11 @@
 #include <linux/workqueue.h>
 #include "musb_core.h"
 
+
+#define DLOG(fmt, ...) \
+	pr_crit("[%s:%u:%s] " fmt "\n", __FILE__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
+
+
 /*
  * Register offsets, note sunxi musb has a different layout then most
  * musb implementations, we translate the layout in musb_readb & friends.
@@ -261,6 +266,8 @@ static int sunxi_musb_init(struct musb *musb)
 	}
 
 	ret = phy_init(glue->phy);
+	// Note: The following "DLOG()" is necessary for OTG USB operation
+	DLOG("phy_init()=%i", ret);
 	if (ret)
 		goto error_unregister_notifier;
 
