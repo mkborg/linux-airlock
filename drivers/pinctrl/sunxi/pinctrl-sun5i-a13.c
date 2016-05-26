@@ -245,16 +245,19 @@ static const struct sunxi_desc_pin sun5i_a13_pins[] = {
 	/* Hole */
 	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 0),
 		  SUNXI_FUNCTION(0x0, "gpio_in"),
+		  SUNXI_FUNCTION(0x1, "gpio_out"),
 		  SUNXI_FUNCTION(0x3, "csi0"),		/* PCLK */
 		  SUNXI_FUNCTION(0x4, "spi2"),		/* CS0 */
 		  SUNXI_FUNCTION_IRQ(0x6, 14)),		/* EINT14 */
 	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 1),
 		  SUNXI_FUNCTION(0x0, "gpio_in"),
+		  SUNXI_FUNCTION(0x1, "gpio_out"),
 		  SUNXI_FUNCTION(0x3, "csi0"),		/* MCLK */
 		  SUNXI_FUNCTION(0x4, "spi2"),		/* CLK */
 		  SUNXI_FUNCTION_IRQ(0x6, 15)),		/* EINT15 */
 	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 2),
 		  SUNXI_FUNCTION(0x0, "gpio_in"),
+		  SUNXI_FUNCTION(0x1, "gpio_out"),
 		  SUNXI_FUNCTION(0x3, "csi0"),		/* HSYNC */
 		  SUNXI_FUNCTION(0x4, "spi2")),		/* MOSI */
 	SUNXI_PIN(SUNXI_PINCTRL_PIN(E, 3),
