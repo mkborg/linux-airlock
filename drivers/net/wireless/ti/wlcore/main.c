@@ -6564,7 +6564,7 @@ int wlcore_remove(struct platform_device *pdev)
 }
 EXPORT_SYMBOL_GPL(wlcore_remove);
 
-u32 wl12xx_debug_level = DEBUG_NONE;
+u32 wl12xx_debug_level = DEBUG_ALL;
 EXPORT_SYMBOL_GPL(wl12xx_debug_level);
 module_param_named(debug_level, wl12xx_debug_level, uint, S_IRUSR | S_IWUSR);
 MODULE_PARM_DESC(debug_level, "wl12xx debugging level");
