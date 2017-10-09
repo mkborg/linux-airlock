@@ -1,0 +1,33 @@
+/*
+ * v1.0 ++ wl1837 support WLAN/BT (uart1), USB0/1, UART0, cpsw, i2c. NO POWER CONTROLLER on I2C 
+ * v1.1 ++ UART4,5, external LEDS, regulator.2 (wl_en).
+ * v1.2 ++ UART2, mmc1 - sdcard, mmc2 - emmc, mmc3 - wlcore 
+ * v1.3 -- debug nodes
+ * v1.3.1 ++ UART1 speed 115200
+ * v1.4.0 ++ mii_rst led 
+ * v1.5.0 ++ ADC support
+ */
+/dts-v1/;
+
+#include "am33xx.dtsi"
+#include "am335x-airlock-common.dtsi"
+#include "am335x-airlock-wl1837.dtsi"
+
+/ {
+	model = "Airlock AM335x BeagleBoard v1.5.0, tibt on ttyS1 115200, MII_RST on LED state: on, SLOW MDIO, ADC";
+	compatible = "ti,am33xx";
+};
+
+&mmc1 { 
+	status = "okay";
+}; 
+
+
+&mmc3 {
+	status = "okay";
+};
+
+
+&mac {
+        status = "okay";
+};

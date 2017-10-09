@@ -1,0 +1,154 @@
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+	wlan_en_reg: fixedregulator@2 { 
+		compatible = "regulator-fixed"; 
+		regulator-name = "wlan-en-regulator"; 
+		regulator-min-microvolt = <1800000>; 
+		regulator-max-microvolt = <1800000>; 
+		startup-delay-us= <350000>; 
+
+		/* WL_EN */
+		gpio = <&gpio0 26 0>;
+		enable-active-high; 
+	}; 
+
+
+	leds {
+		pinctrl-names = "default";
+		pinctrl-0 = <&wlpower_pins>;
+		compatible = "gpio-leds";
+		wl18xx_pow_en {
+			label = "wl_pow_en";
+			gpios = <&gpio1 29 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
+
+
+	tibt {
+		compatible = "tibt";
+		nshutdown_gpio = <60>;
+		dev_name = "/dev/ttyS1";
+		flow_cntrl = <1>;
+		baud_rate = <115200>;
+	};
+
+	btwilink {
+		compatible = "btwilink";
+	};
+
+};
+
+&am33xx_pinmux {
+/*	pinctrl-0 = <&clkout2_pin>; ---TODO check this!!! */
+	
+	uart1_pins_default: pinmux_uart1_pins_default {
+		pinctrl-single,pins = <
+			0x180 ( PIN_INPUT  | MUX_MODE0 ) /* (D16) uart1_rxd.uart1_rxd */
+			0x184 ( PIN_OUTPUT | MUX_MODE0 ) /* (D15) uart1_txd.uart1_txd */
+			0x178 ( PIN_INPUT  | MUX_MODE0 ) /* (D18) uart1_ctsn.uart1_ctsn */
+			0x17c ( PIN_OUTPUT_PULLDOWN | MUX_MODE0 ) /* (D17) uart1_rtsn.uart1_rtsn */
+		>;
+	};
+
+	uart1_pins_sleep: pinmux_uart1_pins_sleep {
+		pinctrl-single,pins = <
+			0x180 ( PIN_INPUT  | MUX_MODE0 ) /* (D16) uart1_rxd.uart1_rxd */
+			0x184 ( PIN_OUTPUT | MUX_MODE0 ) /* (D15) uart1_txd.uart1_txd */
+			0x178 ( PIN_INPUT  | MUX_MODE0 ) /* (D18) uart1_ctsn.uart1_ctsn */
+			0x17c ( PIN_OUTPUT | MUX_MODE0 ) /* (D17) uart1_rtsn.uart1_rtsn  */
+		>;
+	};
+
+	bt_pins_default: pinmux_bt_pins_default { 
+		pinctrl-single,pins = < 
+			0x78 (PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_ad12.gpio1_28 BT_EN*/
+		>; 
+	}; 	
+
+	bt_pins_sleep: pinmux_bt_pins_sleep { 
+		pinctrl-single,pins = < 
+			0x78 (PIN_OUTPUT_PULLUP | MUX_MODE7) /*  gpmc_ad12.gpio1_28 BT_EN*/
+		>;
+	}; 
+
+	mmc3_pins: pinmux_mmc3_pins {
+		pinctrl-single,pins = <
+			0x8c ( PIN_INPUT_PULLUP | MUX_MODE3 ) /* gpio2_1 gpmc_clk.mmc2_clk */
+			0x88 ( PIN_INPUT_PULLUP | MUX_MODE3 ) /* gpio2_0 gpmc_csn3.mmc2_cmd */
+			0x30 ( PIN_INPUT_PULLUP | MUX_MODE3 ) /* gpio1_12 gpmc_ad12.mmc2_dat0 */
+			0x34 ( PIN_INPUT_PULLUP | MUX_MODE3 ) /* gpio1_13 gpmc_ad13.mmc2_dat1 */
+			0x38 ( PIN_INPUT_PULLUP | MUX_MODE3 ) /* gpio1_14 gpmc_ad14.mmc2_dat2 */
+			0x3c ( PIN_INPUT_PULLUP | MUX_MODE3 ) /* gpio1_15 gpmc_ad15.mmc2_dat3 */
+		>;
+	};
+
+	mmc3_pins_sleep: pinmux_mmc3_pins_sleep {
+		pinctrl-single,pins = <
+			0x8c (PIN_INPUT_PULLDOWN | MUX_MODE7) /* gpio2_1 gpmc_clk.mmc2_clk */
+			0x88 (PIN_INPUT_PULLDOWN | MUX_MODE7) /* gpio2_0 gpmc_csn3.mmc2_cmd */
+			0x30 (PIN_INPUT_PULLDOWN | MUX_MODE7) /* gpio1_12 gpmc_ad12.mmc2_dat0 */
+			0x34 (PIN_INPUT_PULLDOWN | MUX_MODE7) /* gpio1_13 gpmc_ad13.mmc2_dat1 */
+			0x38 (PIN_INPUT_PULLDOWN | MUX_MODE7) /* gpio1_14 gpmc_ad14.mmc2_dat2 */
+			0x3c (PIN_INPUT_PULLDOWN | MUX_MODE7) /* gpio1_15 gpmc_ad15.mmc2_dat3 */
+		>;
+	};
+
+	/* wl18xx card enable/irq GPIOs. */
+	wlan_pins: pinmux_wlan_pins {
+		pinctrl-single,pins = <
+			0x28 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_ad10.gpio0_26 WL_EN*/
+			0x2C (PIN_INPUT_PULLDOWN | MUX_MODE7)	/* gpmc_ad11.gpio0_27 WL_IRQ*/
+		>;
+	};
+
+	/* wl18xx card enable/irq GPIOs. */
+	wlan_pins_sleep: pinmux_wlan_pins_sleep {
+		pinctrl-single,pins = <
+			0x28 (PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_ad10.gpio0_26 WL_EN*/
+			0x2C (PIN_INPUT_PULLDOWN | MUX_MODE7)	/* gpmc_ad11.gpio0_27 WL_IRQ*/
+		>;
+	};
+
+	wlpower_pins: pinmux_wlpower_pins {
+		pinctrl-single,pins = <
+			0x7C (PIN_OUTPUT_PULLUP | MUX_MODE7)   /* gpmc_csn0.gpio1_29 WLPOW_EN */
+		>;
+	};
+
+};
+
+&uart1 {
+	pinctrl-names = "default","sleep";
+	pinctrl-0 = <&uart1_pins_default>; 
+	pinctrl-1 = <&uart1_pins_sleep>; 
+	status = "okay";
+};
+
+
+&mmc3 {
+	dmas = <&edma_xbar 12 0 1
+		&edma_xbar 13 0 2>;
+	dma-names = "tx", "rx";
+	status = "okay";
+	vmmc-supply = <&wlan_en_reg>; 
+	bus-width = <4>;
+	pinctrl-names = "default","sleep";
+	pinctrl-0 = <&mmc3_pins &wlan_pins>;
+	pinctrl-1 = <&mmc3_pins_sleep &wlan_pins_sleep>;  
+	ti,non-removable;
+	ti,needs-special-hs-handling;
+	cap-power-off-card;
+	keep-power-in-suspend;
+
+	#address-cells = <1>;
+	#size-cells = <0>;
+	wlcore: wlcore@0 {
+		compatible = "ti,wl1837";
+		reg = <2>;
+		interrupt-parent = <&gpio0>;
+		interrupts = <27 IRQ_TYPE_EDGE_RISING>;
+	};
+};
+
