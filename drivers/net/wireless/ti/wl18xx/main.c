@@ -2049,6 +2049,7 @@ static int wl18xx_probe(struct platform_device *pdev)
 	struct ieee80211_hw *hw;
 	int ret;
 
+	printk(KERN_ERR"wl18 probe call\n");
 	hw = wlcore_alloc_hw(sizeof(struct wl18xx_priv),
 			     WL18XX_AGGR_BUFFER_SIZE,
 			     sizeof(struct wl18xx_event_mailbox));
@@ -2058,13 +2059,18 @@ static int wl18xx_probe(struct platform_device *pdev)
 		goto out;
 	}
 
+	printk(KERN_ERR"wl18 probe post-call\n");
 	wl = hw->priv;
 	wl->ops = &wl18xx_ops;
 	wl->ptable = wl18xx_ptable;
 	ret = wlcore_probe(wl, pdev);
 	if (ret)
+	{
+		printk(KERN_ERR"wl18 wlcore_probe ret fail!\n");
 		goto out_free;
+	}
 
+	printk(KERN_ERR"wl18 probe done, ret - %d\n", ret);
 	return ret;
 
 out_free:
